@@ -5,6 +5,7 @@ package wilderpereira.com.dreambox
  */
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,7 @@ class GoalsAdapter(private var goals: List<Goal>) : RecyclerView.Adapter<GoalsAd
                 itemView.goalNameTv.text = name
                 itemView.target.text = "R$ "+"%.2f".format(value)
                 itemView.deposited.text = "R$ "+"%.2f".format(amaoutDeposited)
-
+                Log.d("test", "image: "+image)
                 //TODO: check if cant load image
                 val uri = Uri.parse(image)
                 val request = ImageRequestBuilder.newBuilderWithSource(uri)
