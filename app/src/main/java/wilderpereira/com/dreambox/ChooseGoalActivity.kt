@@ -18,6 +18,8 @@ import wilderpereira.com.dreambox.model.response.VisionResponseDTO
 import android.graphics.Bitmap
 import android.content.Intent
 import android.util.Base64
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_choose_goal.*
 import java.io.ByteArrayOutputStream
 
 
@@ -46,6 +48,8 @@ class ChooseGoalActivity : AppCompatActivity() {
             val b = baos.toByteArray()
             val imageEncoded = Base64.encodeToString(b, Base64.DEFAULT)
             Log.d(Tag, imageEncoded)
+            ivFromCamera.setImageBitmap(bitmap)
+            Toast.makeText(this@ChooseGoalActivity, "Analisando imagem...", Toast.LENGTH_LONG).show()
             vision().execute(imageEncoded)
         }
     }
@@ -94,11 +98,12 @@ class ChooseGoalActivity : AppCompatActivity() {
             return ""
         }
 
+
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             val response = Gson().fromJson(result, VisionResponseDTO::class.java)
-
             Log.d(Tag, response.toString())
+            goalName.setText(response.responses[0].labelAnnotations[0].description)
         }
     }
 }
