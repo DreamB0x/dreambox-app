@@ -1,18 +1,26 @@
 package wilderpereira.com.dreambox
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_installments.*
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import wilderpereira.com.dreambox.helper.PreferencesManager
+import wilderpereira.com.dreambox.model.Goal
 import wilderpereira.com.dreambox.model.UserClassificationDTO
 
 class InstallmentsActivity : AppCompatActivity() {
+
+    var goalValue: Float = 0f
+    lateinit var imageUrl: String
+    lateinit var goalNameStr: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,12 +28,32 @@ class InstallmentsActivity : AppCompatActivity() {
 
         val gName = intent.getStringExtra("goalName")
         goalName.text = gName
+        goalNameStr = gName
+
+        goalValue = 400.5f
 
         classifyUser().execute("", "")
-        //TODO: get name of goal
+
         //TODO: get currencies from backend
         //load classificarion dialog?
     }
+
+    fun invest(view: View) {
+
+        imageUrl = "https://produto.mercadolivre.com.br/MLB-810454836-raspberry-pi3-pi-3-model-b-quadcore-12ghz-pronta-entrega-_JM"
+        goalValue = 340.5f
+
+        val goal = Goal()
+        goal.amaoutDeposited = 2f
+        goal.image = imageUrl
+        goal.value = goalValue
+        goal.name = goalNameStr
+        PreferencesManager(this@InstallmentsActivity).goal = goal
+        val intent = Intent(this@InstallmentsActivity, GoalsListActivity::class.java)
+        startActivity(intent)
+    }
+
+
 
     inner class classifyUser: AsyncTask<String, String, String>() {
 
