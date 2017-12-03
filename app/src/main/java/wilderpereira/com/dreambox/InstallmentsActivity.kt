@@ -1,20 +1,23 @@
 package wilderpereira.com.dreambox
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import android.widget.Button
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_installments.*
-import okhttp3.MediaType
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import wilderpereira.com.dreambox.helper.PreferencesManager
+import wilderpereira.com.dreambox.model.CurrencyDTO
 import wilderpereira.com.dreambox.model.Goal
 import wilderpereira.com.dreambox.model.UserClassificationDTO
+
 
 class InstallmentsActivity : AppCompatActivity() {
 
@@ -30,17 +33,40 @@ class InstallmentsActivity : AppCompatActivity() {
         goalName.text = gName
         goalNameStr = gName
 
-        goalValue = 400.5f
+//        goalValue = getCurerncies(gName) for mocking
 
-        classifyUser().execute("", "")
+        //real request
+        getCurrenciesFromApi().execute("https://carro.mercadolivre.com.br/MLB-945328916-chevrolet-vectra-elegance-20-8v-4p-2006-_JM")
 
-        //TODO: get currencies from backend
-        //load classificarion dialog?
+
+        classify().execute("https://carro.mercadolivre.com.br/MLB-945328916-chevrolet-vectra-elegance-20-8v-4p-2006-_JM")
+        //classifyUser().execute("", "")
+
     }
 
+    /**
+     * MOCK - will only be used if the internet conditions are bad
+     * get the goal value from API
+     */
+    fun getCurernciesMock(goalName: String) : Float{
+        //just in case of bad connections
+        return 143.5f
+    }
+
+    /**
+     * MOCK - will only be used if the internet conditions are bad
+     * get the monthly amount for the user based in his historic
+     */
+    fun getMonthlyDepositMock(totalAmout: Float) : Float {
+        return totalAmout/12f
+    }
+
+    /**
+     * saves the user goal
+     */
     fun invest(view: View) {
 
-        imageUrl = "https://produto.mercadolivre.com.br/MLB-810454836-raspberry-pi3-pi-3-model-b-quadcore-12ghz-pronta-entrega-_JM"
+        imageUrl = "https://http2.mlstatic.com/chevrolet-vectra-elegance-20-8v-4p-2006-D_NQ_NP_830533-MLB26475123014_122017-O.webp"
         goalValue = 340.5f
 
         val goal = Goal()
@@ -53,9 +79,35 @@ class InstallmentsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * displays a suggestion dialog when the classifier
+     * detects that the user's goal is not recommended
+     * for him
+     */
+    fun displayDialog(context: Context) {
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.dialog_suggestion)
+        dialog.setTitle("Sugestão")
 
+        val dialogButton = dialog.findViewById<Button>(R.id.confirmbtn)
+        val cancel = dialog.findViewById<Button>(R.id.cancelbtn)
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener({
+            dialog.dismiss()
+        })
 
-    inner class classifyUser: AsyncTask<String, String, String>() {
+        cancel.setOnClickListener({
+            dialog.dismiss()
+        })
+
+        dialog.show()
+    }
+
+    /**
+     * get the catergory of the user from the API based in his
+     * debit history
+     */
+    inner class classify: AsyncTask<String, String, String>() {
 
         override fun doInBackground(vararg dreamGoal: String?): String {
 
@@ -64,11 +116,11 @@ class InstallmentsActivity : AppCompatActivity() {
 
                 val client =  OkHttpClient().newBuilder().build()
 
-                val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "{\"product_url\":\"${dreamGoal[0]}\", \"product_name\":\"${dreamGoal[1]}\"}")
+                val formBody = FormBody.Builder().add("product_url", dreamGoal[0]).build()
 
                 val request = okhttp3.Request.Builder()
-                        .url("http://192.168.3.41:5000/user/canbuyproduct")
-                        .post(requestBody)
+                        .url("http://original-dreambox.herokuapp.com/user/canbuyproduct")
+                        .post(formBody)
                         .build()
 
                 return client.newCall(request).execute().body()!!.string()
@@ -84,8 +136,49 @@ class InstallmentsActivity : AppCompatActivity() {
             val response = Gson().fromJson(result, UserClassificationDTO::class.java)
             //if user shouldnt pursue this goal
             if (response != null && !response.aGoodGoal!!) {
+                displayDialog(context = this@InstallmentsActivity)
+            }
+        }
+    }
+
+
+    /**
+     * requests the values of the goal from the api
+     */
+    inner class getCurrenciesFromApi: AsyncTask<String, String, String>() {
+
+        override fun doInBackground(vararg dreamGoal: String?): String {
+
+            //The vision api returns us the url of similar
+            try {
+
+                val client =  OkHttpClient().newBuilder().build()
+
+                val formBody = FormBody.Builder().add("product_url", dreamGoal[0]).build()
+
+                val request = okhttp3.Request.Builder()
+                        .url("http://original-dreambox.herokuapp.com/product/info")
+                        .post(formBody)
+                        .build()
+
+                return client.newCall(request).execute().body()!!.string()
+            } catch(Ex: Exception) {
+                Log.d("Async", "Error in doInBackground " + Ex.message);
+            }
+            return ""
+        }
+
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            val response = Gson().fromJson(result, CurrencyDTO::class.java)
+            //if user shouldnt pursue this goal
+            if (response != null) {
                 //TODO: display dialog
-                Toast.makeText(this@InstallmentsActivity, "melhor não heim", Toast.LENGTH_SHORT).show()
+                goalValue = response.productValue
+
+                monthlyValue.text = "%.2f".format(response.productMonthly)
+                totalValue.text = "%.2f".format(response.productValue)
             }
         }
     }
