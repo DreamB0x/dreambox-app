@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:src="@drawable/atencao"
             android:layout_marginRight="8dp"
             android:layout_gravity="center_vertical"
             android:layout_width="30dp"
@@ -39,15 +40,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:background="#000"
+                android:src="@drawable/ball"
+                android:tint="#f62f3030"
                 android:layout_marginRight="8dp"
                 android:layout_gravity="center_vertical"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Proximidade entre casa e trabalho"/>
+                android:text="Custo alto com o combustível/deslocamento"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -64,15 +66,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:background="#000"
+                android:src="@drawable/ball"
+                android:tint="#f62f3030"
                 android:layout_marginRight="8dp"
                 android:layout_gravity="center_vertical"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Proximidade entre casa e trabalho"/>
+                android:text="Seu deslocamento do dia a dia comporta transporte público"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -89,11 +92,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:background="#000"
+                android:src="@drawable/ball"
+                android:tint="#f62f3030"
                 android:layout_marginRight="8dp"
                 android:layout_gravity="center_vertical"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,6 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
+            android:backgroundTint="#fff"
             android:id="@+id/confirmbtn"
             android:text="Continuar"
             android:layout_marginLeft="8dp"
@@ -116,6 +121,8 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:textColor="#fff"
+            android:backgroundTint="@color/colorRed"
             android:id="@+id/cancelbtn"
             android:text="Cancelar"
             android:layout_marginLeft="8dp"
