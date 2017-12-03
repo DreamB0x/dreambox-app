@@ -30,16 +30,17 @@ class InstallmentsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_installments)
 
         val gName = intent.getStringExtra("goalName")
+        val pUrl = intent.getStringExtra("imageUrl")
+        val gUrl = intent.getStringExtra("productUrl")
+        imageUrl = pUrl
         goalName.text = gName
         goalNameStr = gName
 
-//        goalValue = getCurerncies(gName) for mocking
-
         //real request
-        getCurrenciesFromApi().execute("https://carro.mercadolivre.com.br/MLB-945328916-chevrolet-vectra-elegance-20-8v-4p-2006-_JM")
+        getCurrenciesFromApi().execute(gUrl)
 
 
-        classify().execute("https://carro.mercadolivre.com.br/MLB-945328916-chevrolet-vectra-elegance-20-8v-4p-2006-_JM")
+        classify().execute(gUrl)
         //classifyUser().execute("", "")
 
     }
@@ -65,9 +66,6 @@ class InstallmentsActivity : AppCompatActivity() {
      * saves the user goal
      */
     fun invest(view: View) {
-
-        imageUrl = "https://http2.mlstatic.com/chevrolet-vectra-elegance-20-8v-4p-2006-D_NQ_NP_830533-MLB26475123014_122017-O.webp"
-        goalValue = 340.5f
 
         val goal = Goal()
         goal.amaoutDeposited = 2f

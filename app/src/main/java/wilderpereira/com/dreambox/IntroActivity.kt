@@ -45,11 +45,9 @@ class IntroActivity : AppIntro() {
         }
 
         setDepthAnimation()
-        addSlide(AppIntroFragment.newInstance("Conheça as Instituições", "Veja como é estudar em qualquer lugar pela visão sincera dos alunos.", R.mipmap.ic_launcher, resources.getColor(R.color.colorPrimary)))
-        addSlide(AppIntroFragment.newInstance("Avaliação", "Aqui os alunos podem expor os pontos positivos e negativos, além de avaliar detalhadamente de maneira simples pontos como Infraestrutura, Corpo Docente etc", R.mipmap.ic_launcher, resources.getColor(R.color.colorAccent)))
-        addSlide(AppIntroFragment.newInstance("Descubra os melhores lugare para fazer um curso", "Conseguimos saber qual os melhores lugares para se fazer um curso a partir das avaliações dos alunos", R.mipmap.ic_launcher, resources.getColor(R.color.colorPrimaryDark)))
-        addSlide(AppIntroFragment.newInstance("Encontre as melhores faculdades de uma categoria", "Avaliamos segurança, infraestrutura, corpo docente, comunicação etc", R.mipmap.ic_launcher,resources.getColor(R.color.background_floating_material_dark)))
-        addSlide(AppIntroFragment.newInstance("Contribua para uma educação de qualidade", "Avalie sua instituição e contribua para a melhoria dela e ajudando quem ainda não decidiu pra onde ir.", R.mipmap.ic_launcher, resources.getColor(R.color.switch_thumb_disabled_material_dark)))
+        addSlide(AppIntroFragment.newInstance("Sonhe Alto", "Coloque todos seus sonhos dentro de nossa caixa e veja eles serem realizados.", R.drawable.foguete, resources.getColor(R.color.colorPrimary)))
+        addSlide(AppIntroFragment.newInstance("Tenha Ajuda de especialistas", "Usamos inteligência artificial para lhe entregar de fato o que você precisa e cabe no seu bolso.", R.drawable.robo, resources.getColor(R.color.colorAccent)))
+        addSlide(AppIntroFragment.newInstance("Nunca mais fique no vermelho", "Vamos te auxiliar para que tenha uma vida financeira saudável", R.drawable.cofre, resources.getColor(R.color.colorPrimaryDark)))
 
     }
 

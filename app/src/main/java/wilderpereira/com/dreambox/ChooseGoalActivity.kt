@@ -26,6 +26,8 @@ import java.io.ByteArrayOutputStream
 class ChooseGoalActivity : AppCompatActivity() {
 
     val Tag: String = "Async"
+    var imageUrl: String = ""
+    var productUrl: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +38,12 @@ class ChooseGoalActivity : AppCompatActivity() {
 
         val goal = goalName.text.toString()
 
+
         if (!goal.isNullOrBlank()) {
             val intent = Intent(this@ChooseGoalActivity, InstallmentsActivity::class.java)
             intent.putExtra("goalName", goal)
+            intent.putExtra("imageUrl", imageUrl)
+            intent.putExtra("productUrl", productUrl)
 
             //TODO: pass goal name
             startActivity(intent)
@@ -46,25 +51,27 @@ class ChooseGoalActivity : AppCompatActivity() {
     }
 
     fun photoClick(view: View) {
+        view.isClickable = false
         ImagePicker.pickImage(this, "Escolha a imagem do seu objetivo");
+
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        val bitmap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data)
-        if (bitmap != null){
-            val baos = ByteArrayOutputStream()
-            bitmap!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
-            val b = baos.toByteArray()
-            val imageEncoded = Base64.encodeToString(b, Base64.DEFAULT)
-            Log.d(Tag, imageEncoded)
-            ivFromCamera.setImageBitmap(bitmap)
-            Toast.makeText(this@ChooseGoalActivity, "Analisando imagem...", Toast.LENGTH_LONG).show()
-            vision().execute(imageEncoded)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode != RESULT_CANCELED && data != null && resultCode != RESULT_CANCELED) {
+            if (requestCode == 234) {
+                val bitmap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data)
+                if (bitmap != null) {
+                    val baos = ByteArrayOutputStream()
+                    bitmap!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                    val b = baos.toByteArray()
+                    val imageEncoded = Base64.encodeToString(b, Base64.DEFAULT)
+                    Log.d(Tag, imageEncoded)
+                    ivFromCamera.setImageBitmap(bitmap)
+                    Toast.makeText(this@ChooseGoalActivity, "Analisando imagem...", Toast.LENGTH_LONG).show()
+                    vision().execute(imageEncoded)
+                }
+            }
         }
-    }
-
-    fun audioClick(view: View) {
-
     }
 
     inner class vision: AsyncTask<String, String, String>() {
@@ -111,8 +118,12 @@ class ChooseGoalActivity : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             val response = Gson().fromJson(result, VisionResponseDTO::class.java)
-            Log.d(Tag, response.toString())
-            goalName.setText(response.responses[0].labelAnnotations[0].description)
+            if (response != null) {
+                Log.d(Tag, response.toString())
+                goalName.setText(response.responses[0].labelAnnotations[0].description)
+                productUrl = response.responses[0].webDetection.pagesWithMatchingImages[0].url
+                imageUrl = response.responses[0].webDetection.fullMatchingImages[0].url
+            }
         }
     }
 }
