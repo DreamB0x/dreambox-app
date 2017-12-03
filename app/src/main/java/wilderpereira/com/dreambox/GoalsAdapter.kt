@@ -41,6 +41,7 @@ class GoalsAdapter(private var goals: List<Goal>) : RecyclerView.Adapter<GoalsAd
                 itemView.goalNameTv.text = name
                 itemView.target.text = "R$ "+"%.2f".format(value)
                 itemView.deposited.text = "R$ "+"%.2f".format(amaoutDeposited)
+                itemView.progress.progress = (amaoutDeposited/value*100).toInt()
                 Log.d("test", "image: "+image)
                 //TODO: check if cant load image
                 val uri = Uri.parse(image)
