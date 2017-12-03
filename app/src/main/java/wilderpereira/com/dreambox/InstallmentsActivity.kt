@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_installments.*
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -17,8 +18,8 @@ class InstallmentsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_installments)
 
-        val goalName = intent.getStringExtra("goalName")
-        Toast.makeText(this, goalName, Toast.LENGTH_SHORT).show()
+        val gName = intent.getStringExtra("goalName")
+        goalName.text = gName
 
         classifyUser().execute("", "")
         //TODO: get name of goal
