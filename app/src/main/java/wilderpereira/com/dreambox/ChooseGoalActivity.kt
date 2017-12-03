@@ -33,7 +33,16 @@ class ChooseGoalActivity : AppCompatActivity() {
     }
 
     fun goalContinue(view: View) {
-        //TODO: display dialog: "analisando seu extrato, verificamos que essa pode não ser a sua melhor opção - mostrar extrato etc"
+
+        val goal = goalName.text.toString()
+
+        if (!goal.isNullOrBlank()) {
+            val intent = Intent(this@ChooseGoalActivity, InstallmentsActivity::class.java)
+            intent.putExtra("goalName", goal)
+
+            //TODO: pass goal name
+            startActivity(intent)
+        }
     }
 
     fun photoClick(view: View) {

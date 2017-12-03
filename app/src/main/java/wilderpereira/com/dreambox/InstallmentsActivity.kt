@@ -16,8 +16,13 @@ class InstallmentsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_installments)
-        //TODO: get data from other activity
+
+        val goalName = intent.getStringExtra("goalName")
+        Toast.makeText(this, goalName, Toast.LENGTH_SHORT).show()
+
         classifyUser().execute("", "")
+        //TODO: get name of goal
+        //TODO: get currencies from backend
         //load classificarion dialog?
     }
 

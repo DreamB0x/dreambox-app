@@ -1,8 +1,10 @@
 package wilderpereira.com.dreambox
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import kotlinx.android.synthetic.main.activity_goals_list.*
 import wilderpereira.com.dreambox.model.Goal
 
@@ -27,6 +29,9 @@ class  GoalsListActivity : AppCompatActivity() {
         laodGoals(goalsList)
     }
 
+    fun addGoal(view: View) {
+        startActivity(Intent(this@GoalsListActivity, ChooseGoalActivity::class.java))
+    }
 
     fun laodGoals(goals: List<Goal>) {
         goalsAdapter = GoalsAdapter(goals)
