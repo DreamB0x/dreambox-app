@@ -10,10 +10,10 @@ import com.mvc.imagepicker.ImagePicker
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-import wilderpereira.com.dreambox.model.Feature
-import wilderpereira.com.dreambox.model.Image
-import wilderpereira.com.dreambox.model.Request
-import wilderpereira.com.dreambox.model.VisionDTO
+import wilderpereira.com.dreambox.model.vision.Feature
+import wilderpereira.com.dreambox.model.vision.Image
+import wilderpereira.com.dreambox.model.vision.Request
+import wilderpereira.com.dreambox.model.vision.VisionDTO
 import wilderpereira.com.dreambox.model.response.VisionResponseDTO
 import android.graphics.Bitmap
 import android.content.Intent

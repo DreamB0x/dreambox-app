@@ -1,4 +1,4 @@
-package wilderpereira.com.dreambox
+package wilderpereira.com.dreambox.model
 
 /**
  * Created by Wilder on 02/12/17.

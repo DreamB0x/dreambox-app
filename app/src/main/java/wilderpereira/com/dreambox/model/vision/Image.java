@@ -1,5 +1,5 @@
 
-package wilderpereira.com.dreambox.model;
+package wilderpereira.com.dreambox.model.vision;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import kotlinx.android.synthetic.main.item_goal.view.*
+import wilderpereira.com.dreambox.model.Goal
 
 /**
  * Created by Wilder on 17/10/17.
